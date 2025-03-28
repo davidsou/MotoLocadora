@@ -1,12 +1,11 @@
 ﻿namespace MotoLocadoraBuildingBlocks.Entities;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
-    public Guid Id { get; set; }
-    public bool Active { get; set; }
+    public int Id { get; set; } 
+    public bool Active { get; set; } = true;
     public string? CreatedBy { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public string? ChangedBy { get; set; }
-    public DateTime ChangedAt { get; set; }
-
+    public DateTime ChangedAt { get; set; } = DateTime.UtcNow;
 }

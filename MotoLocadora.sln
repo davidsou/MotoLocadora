@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Domain", "Moto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Infrastructure", "MotoLocadora.Infrastructure\MotoLocadora.Infrastructure.csproj", "{05F40783-EDB6-49E3-B348-FB793C37E4CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.BuildingBlocks", "MotoLocadoraInfrastructure\MotoLocadora.BuildingBlocks.csproj", "{95F097D9-B178-4315-A5E7-38EE843C7966}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Api", "MotoLocadora.Api\MotoLocadora.Api.csproj", "{EC745D6E-EC72-4F3F-B1FF-28977CFB0F5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoLocadora.BuildingBlocks", "MotoLocadora.BuildingBlocks\MotoLocadora.BuildingBlocks.csproj", "{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +31,14 @@ Global
 		{05F40783-EDB6-49E3-B348-FB793C37E4CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05F40783-EDB6-49E3-B348-FB793C37E4CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05F40783-EDB6-49E3-B348-FB793C37E4CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95F097D9-B178-4315-A5E7-38EE843C7966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95F097D9-B178-4315-A5E7-38EE843C7966}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95F097D9-B178-4315-A5E7-38EE843C7966}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95F097D9-B178-4315-A5E7-38EE843C7966}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC745D6E-EC72-4F3F-B1FF-28977CFB0F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC745D6E-EC72-4F3F-B1FF-28977CFB0F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC745D6E-EC72-4F3F-B1FF-28977CFB0F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC745D6E-EC72-4F3F-B1FF-28977CFB0F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

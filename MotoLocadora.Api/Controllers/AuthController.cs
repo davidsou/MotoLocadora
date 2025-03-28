@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MotoLocadora.Api.Controllers
+namespace MotoLocadora.Api.Controllers;
+
+public class AuthController : Controller
 {
-    public class AuthController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }
