@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MotoLocadora.Domain.Entities
 {
-    public class AplicationUser:BaseEntity
+    public class Tariff:BaseEntity
     {
-        public string Name { get; set; }
-        public int Type { get; set; }
+        public decimal Price { get; set; }
+        public int Days { get; set; }
     }
 }
