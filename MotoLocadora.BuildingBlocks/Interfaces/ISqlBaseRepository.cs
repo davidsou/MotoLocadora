@@ -1,8 +1,7 @@
 ﻿using MotoLocadora.BuildingBlocks.Entities;
-using MotoLocadoraBuildingBlocks.Entities;
 using System.Linq.Expressions;
 
-namespace MotoLocadoraBuildingBlocks.Interfaces;
+namespace MotoLocadora.BuildingBlocks.Interfaces;
 
 public interface ISqlBaseRepository<T> where T : BaseEntity
 {

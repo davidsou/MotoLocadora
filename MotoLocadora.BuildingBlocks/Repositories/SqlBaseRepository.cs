@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoLocadora.BuildingBlocks.Entities;
-using MotoLocadoraBuildingBlocks.Entities;
-using MotoLocadoraBuildingBlocks.Interfaces;
+using MotoLocadora.BuildingBlocks.Interfaces;
 using System.Linq.Expressions;
 using System.Reflection;
 

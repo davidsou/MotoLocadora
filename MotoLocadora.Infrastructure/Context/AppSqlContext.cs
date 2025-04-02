@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoLocadora.Domain.Entities;
 using MotoLocadora.Infrastructure.EntityConfiguration;
-using MotoLocadoraBuildingBlocks.Entities;
+using MotoLocadora.BuildingBlocks.Entities;
 using System.Reflection;
 
 namespace MotoLocadora.Infrastructure.Context;

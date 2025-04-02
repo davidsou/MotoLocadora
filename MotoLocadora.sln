@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Application", "MotoLocadora.Application\MotoLocadora.Application.csproj", "{94CE8491-4724-424A-A3AC-6642DDDE9FD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoLocadora.Application", "MotoLocadora.Application\MotoLocadora.Application.csproj", "{94CE8491-4724-424A-A3AC-6642DDDE9FD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Domain", "MotoLocadora.Domain\MotoLocadora.Domain.csproj", "{165F6E1B-2C58-435B-B7CA-CB9CCEF587C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoLocadora.Domain", "MotoLocadora.Domain\MotoLocadora.Domain.csproj", "{165F6E1B-2C58-435B-B7CA-CB9CCEF587C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Infrastructure", "MotoLocadora.Infrastructure\MotoLocadora.Infrastructure.csproj", "{05F40783-EDB6-49E3-B348-FB793C37E4CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoLocadora.Infrastructure", "MotoLocadora.Infrastructure\MotoLocadora.Infrastructure.csproj", "{05F40783-EDB6-49E3-B348-FB793C37E4CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Api", "MotoLocadora.Api\MotoLocadora.Api.csproj", "{EC745D6E-EC72-4F3F-B1FF-28977CFB0F5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoLocadora.Api", "MotoLocadora.Api\MotoLocadora.Api.csproj", "{EC745D6E-EC72-4F3F-B1FF-28977CFB0F5B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoLocadora.BuildingBlocks", "MotoLocadora.BuildingBlocks\MotoLocadora.BuildingBlocks.csproj", "{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoLocadora.Infraestructure.Ioc", "MotoLocadora.Infraestructure.Ioc\MotoLocadora.Infraestructure.Ioc.csproj", "{F45CDA56-6168-4BB4-B67F-3256D71FD1C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9EAC65F-E41C-4A4D-B0E6-BF63B1FC8467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F45CDA56-6168-4BB4-B67F-3256D71FD1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F45CDA56-6168-4BB4-B67F-3256D71FD1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F45CDA56-6168-4BB4-B67F-3256D71FD1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F45CDA56-6168-4BB4-B67F-3256D71FD1C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
