@@ -2,7 +2,7 @@
 
 namespace MotoLocadora.Api.Controllers;
 
-public class AuthController : Controller
+public class AuthController : BaseController
 {
     public IActionResult Index()
     {

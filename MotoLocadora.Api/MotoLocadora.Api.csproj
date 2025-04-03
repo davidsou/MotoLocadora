@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Figgle" Version="0.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MotoLocadora.BuildingBlocks\MotoLocadora.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\MotoLocadora.Infraestructure.Ioc\MotoLocadora.Infraestructure.Ioc.csproj" />
   </ItemGroup>
 
 </Project>

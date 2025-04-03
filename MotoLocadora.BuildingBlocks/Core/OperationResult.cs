@@ -1,12 +1,19 @@
 ﻿namespace MotoLocadora.BuildingBlocks.Core;
 
-
-public class OperationResult<T>
+public class OperationResult
 {
-    public bool Success { get; set; }
-    public string? ErrorMessage { get; set; }
-    public T? Data { get; set; }
+    public bool IsSuccess { get; set; }
+    public List<string> Errors { get; set; } = new();
+    public static OperationResult Success() => new() { IsSuccess = true };
+    public static OperationResult Failure(params string[] errors) => new() { IsSuccess = false, Errors = errors.ToList() };
+    public static OperationResult Failure(IEnumerable<string> errors) => new() { IsSuccess = false, Errors = errors.ToList() };
+}
 
-    public static OperationResult<T> Ok(T data) => new() { Success = true, Data = data };
-    public static OperationResult<T> Fail(string error) => new() { Success = false, ErrorMessage = error };
+public class OperationResult<T> : OperationResult
+{
+    public T? Value { get; set; }
+
+    public static OperationResult<T> Success(T value) => new() { IsSuccess = true, Value = value };
+    public new static OperationResult<T> Failure(params string[] errors) => new() { IsSuccess = false, Errors = errors.ToList() };
+    public new static OperationResult<T> Failure(IEnumerable<string> errors) => new() { IsSuccess = false, Errors = errors.ToList() };
 }

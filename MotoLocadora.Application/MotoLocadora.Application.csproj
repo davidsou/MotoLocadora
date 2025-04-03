@@ -7,11 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Folder Include="Features\Tariffs\" />
+    <Folder Include="Features\Rents\" />
+    <Folder Include="Features\Ryders\" />
+    <Folder Include="Features\Notifications\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Mappers\" />
     <Folder Include="Extensions\" />
     <Folder Include="Validators\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MotoLocadora.BuildingBlocks\MotoLocadora.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\MotoLocadora.Domain\MotoLocadora.Domain.csproj" />
   </ItemGroup>
 
 </Project>

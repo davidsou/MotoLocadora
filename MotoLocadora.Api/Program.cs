@@ -1,6 +1,20 @@
+using Figgle;
+using MotoLocadora.BuildingBlocks.Options;
+using MotoLocadora.Infraestructure.Ioc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var asciiArt = FiggleFonts.Standard.Render("FT Folha");
+Console.WriteLine(asciiArt);
+
+
+var connectionStringOptions = new ConnectionStringOptions();
+builder.Configuration.GetSection(ConnectionStringOptions.SectionName).Bind(connectionStringOptions);
+
+builder.Services.AddInfraestructure(builder.Configuration);
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

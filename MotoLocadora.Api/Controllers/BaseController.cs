@@ -10,8 +10,8 @@ public abstract class BaseController : ControllerBase
         if (result is null)
             return NoContent();
 
-        return result.Success
-            ? (result.Data is null ? NoContent() : Ok(result.Data))
-            : BadRequest(new { error = result.ErrorMessage });
+        return result.IsSuccess
+            ? (result.Value is null ? NoContent() : Ok(result.Value))
+            : BadRequest(new { error = result.Errors });
     }
 }
