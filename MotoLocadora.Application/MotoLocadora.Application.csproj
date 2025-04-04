@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Tariffs\" />
-    <Folder Include="Features\Rents\" />
-    <Folder Include="Features\Ryders\" />
-    <Folder Include="Features\Notifications\" />
+    <Folder Include="Features\Tariffs\Dtos\" />
+    <Folder Include="Features\Tariffs\Mappers\" />
+    <Folder Include="Features\Tariffs\Validators\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Mappers\" />
     <Folder Include="Extensions\" />
