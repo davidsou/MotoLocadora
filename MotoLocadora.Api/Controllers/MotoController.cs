@@ -6,6 +6,6 @@ public class MotoController : BaseController
 {
     public IActionResult Index()
     {
-        return View();
+        return Ok();
     }
 }
