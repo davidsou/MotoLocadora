@@ -44,4 +44,18 @@ public class MotorcycleController(IMediator mediator) : BaseController(mediator)
         var result = await _mediator.Send(new GetAllMotorcycles.Query());
         return FromResult(result);
     }
+
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPaged([FromQuery] MotorcycleQueryParams queryParams)
+    {
+        var result = await _mediator.Send(new QueryMotorcycles.Query(queryParams));
+        return FromResult(result);
+    }
+
+    [HttpGet("detailed/{id}")]
+    public async Task<IActionResult> GetDetailedById(int id)
+    {
+        var result = await _mediator.Send(new QueryMotorcycleById.Query(id));
+        return FromResult(result);
+    }
 }

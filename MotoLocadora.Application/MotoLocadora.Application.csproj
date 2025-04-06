@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Validators\" />
+    <Folder Include="Common\" />
   </ItemGroup>
 
   <ItemGroup>

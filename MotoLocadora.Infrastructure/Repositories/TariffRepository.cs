@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MotoLocadora.BuildingBlocks.Repositories;
+﻿using MotoLocadora.BuildingBlocks.Repositories;
 using MotoLocadora.Domain.Entities;
 using MotoLocadora.Domain.Interfaces;
 using MotoLocadora.Infrastructure.Context;

@@ -42,4 +42,18 @@ public class RentController(IMediator mediator) : BaseController(mediator)
         var result = await _mediator.Send(new GetAllRents.Query());
         return FromResult(result);
     }
+
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPaged([FromQuery] RentQueryParams queryParams)
+    {
+        var result = await _mediator.Send(new QueryRents.Query(queryParams));
+        return FromResult(result);
+    }
+
+    [HttpGet("detailed/{id}")]
+    public async Task<IActionResult> GetDetailedById(int id)
+    {
+        var result = await _mediator.Send(new QueryRentById.Query(id));
+        return FromResult(result);
+    }
 }

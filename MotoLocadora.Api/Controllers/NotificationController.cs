@@ -41,4 +41,17 @@ public class NotificationController(IMediator mediator) : BaseController(mediato
         var result = await _mediator.Send(new GetAllNotifications.Query());
         return FromResult(result);
     }
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPaged([FromQuery] NotificationQueryParams queryParams)
+    {
+        var result = await _mediator.Send(new QueryNotifications.Query(queryParams));
+        return FromResult(result);
+    }
+
+    [HttpGet("detailed/{id}")]
+    public async Task<IActionResult> GetDetailedById(int id)
+    {
+        var result = await _mediator.Send(new QueryNotificationById.Query(id));
+        return FromResult(result);
+    }
 }

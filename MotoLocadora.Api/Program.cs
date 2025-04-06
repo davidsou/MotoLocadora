@@ -1,4 +1,5 @@
 using Figgle;
+using MotoLocadora.Application.Extensions;
 using MotoLocadora.BuildingBlocks.Options;
 using MotoLocadora.Infraestructure.Ioc;
 
@@ -14,6 +15,7 @@ var connectionStringOptions = new ConnectionStringOptions();
 builder.Configuration.GetSection(ConnectionStringOptions.SectionName).Bind(connectionStringOptions);
 
 builder.Services.AddInfraestructure(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 
 builder.Services.AddControllers();

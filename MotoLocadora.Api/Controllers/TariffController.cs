@@ -41,5 +41,19 @@ public class TariffController(IMediator mediator) : BaseController(mediator)
         var result = await _mediator.Send(new GetAllTariffs.Query());
         return FromResult(result);
     }
+
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPaged([FromQuery] TariffQueryParams queryParams)
+    {
+        var result = await _mediator.Send(new QueryTariffs.Query(queryParams));
+        return FromResult(result);
+    }
+
+    [HttpGet("detailed/{id}")]
+    public async Task<IActionResult> GetDetailedById(int id)
+    {
+        var result = await _mediator.Send(new QueryTariffById.Query(id));
+        return FromResult(result);
+    }
 }
 

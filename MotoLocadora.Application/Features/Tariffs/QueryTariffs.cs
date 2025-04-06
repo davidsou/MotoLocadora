@@ -1,0 +1,51 @@
+﻿using MediatR;
+using Microsoft.Extensions.Logging;
+using MotoLocadora.Application.Features.Tariffs.Dtos;
+using MotoLocadora.Application.Features.Tariffs.Mappers;
+using MotoLocadora.BuildingBlocks.Core;
+using MotoLocadora.BuildingBlocks.Entities;
+using MotoLocadora.Domain.Entities;
+using MotoLocadora.Domain.Interfaces;
+
+namespace MotoLocadora.Application.Features.Tariffs;
+
+public class QueryTariffs
+{
+    public record Query(TariffQueryParams Params) : IRequest<OperationResult<PagedResult<TariffDto>>>;
+
+    public class Handler(ITariffRepository repository, ILogger<Handler> logger)
+        : BaseHandler(logger), IRequestHandler<Query, OperationResult<PagedResult<TariffDto>>>
+    {
+        private readonly ITariffRepository _repository = repository;
+
+        public async Task<OperationResult<PagedResult<TariffDto>>> Handle(Query request, CancellationToken cancellationToken)
+        {
+            return await TryCatchAsync(async () =>
+            {
+                var parameters = request.Params;
+
+                var queryOptions = new QueryOptions<Tariff>
+                {
+                    Filter = t =>
+                        (!parameters.FilterByPrice.HasValue || t.Price == parameters.FilterByPrice.Value) &&
+                        (!parameters.FilterByDays.HasValue || t.Days == parameters.FilterByDays.Value),
+                    OrderBy = parameters.OrderBy,
+                    OrderDescending = parameters.OrderDescending,
+                    Skip = parameters.Skip,
+                    Take = parameters.Take,
+                    AsNoTracking = true
+                };
+
+                var items = await _repository.QueryAsync(queryOptions);
+                var totalItems = items.Count();
+
+                return OperationResult<PagedResult<TariffDto>>.Success(new PagedResult<TariffDto>
+                {
+                    TotalCount = totalItems,
+                    Items = items.Select(x => x.ToDto()).ToList()
+                });
+            }, "Consulta paginada de tarifas");
+        }
+    }
+}
+

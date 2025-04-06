@@ -42,4 +42,17 @@ public class RiderController(IMediator mediator) : BaseController(mediator)
         var result = await _mediator.Send(new GetAllRiders.Query());
         return FromResult(result);
     }
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPaged([FromQuery] RiderQueryParams queryParams)
+    {
+        var result = await _mediator.Send(new QueryRiders.Query(queryParams));
+        return FromResult(result);
+    }
+
+    [HttpGet("detailed/{id}")]
+    public async Task<IActionResult> GetDetailedById(int id)
+    {
+        var result = await _mediator.Send(new QueryRiderById.Query(id));
+        return FromResult(result);
+    }
 }
