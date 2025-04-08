@@ -37,12 +37,23 @@ public class QueryRiders
                     AsNoTracking = true
                 };
 
+                var totalItems = await _repository.CountAsync(queryOptions.Filter);
+
                 var items = await _repository.QueryAsync(queryOptions);
-                var totalItems = items.Count();
+
+                var pageSize = parameters.Take ?? totalItems;
+                var currentPage = (parameters.Skip.HasValue && pageSize > 0)
+                    ? (parameters.Skip.Value / pageSize) + 1
+                    : 1;
+
+                var totalPages = pageSize > 0 ? (int)Math.Ceiling(totalItems / (double)pageSize) : 1;
 
                 return OperationResult<PagedResult<RiderDto>>.Success(new PagedResult<RiderDto>
                 {
                     TotalCount = totalItems,
+                    PageSize = pageSize,
+                    CurrentPage = currentPage,
+                    TotalPages = totalPages,
                     Items = items.Select(x => x.ToDto()).ToList()
                 });
             }, "Consulta paginada de condutores");

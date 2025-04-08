@@ -117,4 +117,12 @@ public class SqlBaseRepository<T>(DbContext context) : ISqlBaseRepository<T> whe
         dbSet.Remove(entity);
         await Task.CompletedTask;
     }
+    public async Task<int> CountAsync(Expression<Func<T, bool>>? filter = null)
+    {
+        IQueryable<T> query = dbSet.Where(e => e.Active);
+        if (filter != null)
+            query = query.Where(filter);
+
+        return await query.CountAsync();
+    }
 }

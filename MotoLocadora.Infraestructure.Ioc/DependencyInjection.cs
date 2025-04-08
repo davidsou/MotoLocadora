@@ -5,6 +5,9 @@ using MotoLocadora.Domain.Interfaces;
 using MotoLocadora.Infrastructure.Context;
 using MotoLocadora.Infrastructure.Repositories;
 using MotoLocadora.BuildingBlocks.Options;
+using MotoLocadora.BuildingBlocks.Entities;
+using Microsoft.AspNetCore.Identity;
+using MotoLocadora.Infrastructure.Services;
 
 namespace MotoLocadora.Infraestructure.Ioc;
 
@@ -17,6 +20,7 @@ public static class DependencyInjection
                      .Bind(connectionStringSettings);
 
         DbContext(services, connectionStringSettings);
+      //  ApplicationServices(services);
         Repositories(services);
         // builder.Services.AddRabbitMqSetup(builder.Configuration);
 
@@ -24,10 +28,15 @@ public static class DependencyInjection
     }
     private static void ApplicationServices(IServiceCollection services)
     {
+        services.AddScoped<IEmailSender<ApplicationUser>, EmailSender>();
     }
     private static void DbContext(IServiceCollection services, ConnectionStringOptions connectionStringSettings)
     {
         services.AddDbContext<AppSqlContext>(options => options.UseNpgsql(connectionStringSettings.SqlConnection));
+
+        services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseNpgsql(connectionStringSettings.SqlConnection));
+
+
     }
     private static void Repositories(IServiceCollection services)
     {

@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  motolocadora-api:
+    volumes:
+      - .:/src
+    command: >
+      sh -c "dotnet ef database update --context ApplicationIdentityDbContext --project MotoLocadora.Infrastructure --startup-project MotoLocadora.Api &&
+             dotnet ef database update --context AppSqlContext --project MotoLocadora.Infrastructure --startup-project MotoLocadora.Api &&
+             dotnet MotoLocadora.Api.dll"

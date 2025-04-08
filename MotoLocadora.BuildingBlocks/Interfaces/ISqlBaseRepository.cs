@@ -22,4 +22,6 @@ public interface ISqlBaseRepository<T> where T : BaseEntity
     Task UpdateAsync(T entity);
     Task RemoveAsync(T entity);
     Task DeleteAsync(T entity);
+    Task<int> CountAsync(Expression<Func<T, bool>>? filter = null);
+
 }
