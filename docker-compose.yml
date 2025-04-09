@@ -1,4 +1,4 @@
-version: '3.8'
+﻿version: '3.8'
 
 services:
   motolocadora-db:
@@ -25,6 +25,38 @@ services:
       - ConnectionStrings__DefaultConnection=Host=motolocadora-db;Port=5432;Database=motolocadora;Username=postgres;Password=postgres
     ports:
       - "5000:80"
+    depends_on:
+      - motolocadora-db
+    networks:
+      - motolocadora-network
+
+  motolocadora-migrator-identity:
+    build:
+      context: .
+      dockerfile: MotoLocadora.Api/Dockerfile.migrator
+    container_name: motolocadora-migrator-identity
+    entrypoint: ""
+    command: >
+      sh -c 'dotnet ef migrations add InitialIdentityMigration --context ApplicationIdentityDbContext --project /src/MotoLocadora.Infrastructure --startup-project /src/MotoLocadora.Api --output-dir Migrations/ApplicationIdentity && \
+      echo "Migration ApplicationIdentity criada com sucesso!"'
+    volumes:
+      - .:/src
+    depends_on:
+      - motolocadora-db
+    networks:
+      - motolocadora-network
+
+  motolocadora-migrator-app:
+    build:
+      context: .
+      dockerfile: MotoLocadora.Api/Dockerfile.migrator
+    container_name: motolocadora-migrator-app
+    entrypoint: ""
+    command: >
+      sh -c 'dotnet ef migrations add InitialAppMigration --context AppSqlContext --project /src/MotoLocadora.Infrastructure --startup-project /src/MotoLocadora.Api --output-dir Migrations/Application && \
+      echo "Migration AppSqlContext criada com sucesso!"'
+    volumes:
+      - .:/src
     depends_on:
       - motolocadora-db
     networks:
