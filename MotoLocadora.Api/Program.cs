@@ -9,6 +9,7 @@ using MotoLocadora.BuildingBlocks.Entities;
 using MotoLocadora.BuildingBlocks.Options;
 using MotoLocadora.Infraestructure.Ioc;
 using MotoLocadora.Infrastructure.Context;
+using MotoLocadora.Infrastructure.Seeders;
 using MotoLocadora.Infrastructure.Services;
 using System.Text;
 
@@ -18,15 +19,22 @@ var builder = WebApplication.CreateBuilder(args);
 var asciiArt = FiggleFonts.Standard.Render("MOTOLOCADORA");
 Console.WriteLine(asciiArt);
 
-// Configuração das opções de connection string e jwt
+// Configuração das opções de connection string , jwt e seeder
 var connectionStringOptions = new ConnectionStringOptions();
 builder.Configuration.GetSection(ConnectionStringOptions.SectionName).Bind(connectionStringOptions);
 var jwtOptions = new JwtOptions();
 builder.Configuration.GetSection(JwtOptions.SectionName).Bind(jwtOptions);
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
+builder.Services.Configure<AdminSeedOptions>(builder.Configuration.GetSection(AdminSeedOptions.SectionName));
 
-// ? Centralizamos a injeção no método AddInfrastructure
+// Registra o seeder
+builder.Services.AddScoped<ApplicationSeeder>();
+
+// Centralizamos a injeção no método AddInfrastructure
 builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddApplicationServices();
+
+
 
 // Configuração do Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -73,8 +81,49 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.CustomSchemaIds(type => type.FullName);
 });
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "MotoLocadora API",
+        Version = "v1"
+    });
+
+    c.CustomSchemaIds(type => type.FullName);
+
+    var securityScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Insira o token JWT no formato: Bearer {token}",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Reference = new Microsoft.OpenApi.Models.OpenApiReference
+        {
+            Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+
+    c.AddSecurityDefinition("Bearer", securityScheme);
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        { securityScheme, Array.Empty<string>() }
+    });
+});
+
+
 
 var app = builder.Build();
+
+// Seeder generico.
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<ApplicationSeeder>();
+    await seeder.SeedAsync();
+}
 
 // Configuração do pipeline HTTP
 if (app.Environment.IsDevelopment())
@@ -88,8 +137,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Mapear os endpoints automáticos do Identity API
-app.MapIdentityApi<ApplicationUser>();
 
 app.MapControllers();
 

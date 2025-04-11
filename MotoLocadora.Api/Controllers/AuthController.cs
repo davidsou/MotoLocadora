@@ -16,23 +16,12 @@ namespace MotoLocadora.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : BaseController
+[AllowAnonymous]
+public class AuthController(UserManager<ApplicationUser> userManager,
+                      RoleManager<IdentityRole> roleManager,
+                      ITokenService tokenService,
+                      IMediator mediator) : BaseController(mediator)
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly ITokenService _tokenService;
-
-    public AuthController(UserManager<ApplicationUser> userManager,
-                          RoleManager<IdentityRole> roleManager,
-                          ITokenService tokenService,
-                          IMediator mediator)
-        : base(mediator)
-    {
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _tokenService = tokenService;
-    }
-
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
@@ -43,60 +32,61 @@ public class AuthController : BaseController
             FullName = request.FullName
         };
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+        var result = await userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
         {
             return FromResult(OperationResult.Failure(result.Errors.Select(e => e.Description)));
         }
 
-        await _userManager.AddToRoleAsync(user, "Cliente");
+        await userManager.AddToRoleAsync(user, "Client");
 
         return FromResult(OperationResult.Success("Usuário registrado com sucesso!"));
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+        var user = await userManager.FindByEmailAsync(request.Email);
+        if (user == null || !await userManager.CheckPasswordAsync(user, request.Password))
         {
             return FromResult(OperationResult.Failure("Credenciais inválidas."));
         }
 
-        var roles = await _userManager.GetRolesAsync(user);
-        var tokenResult = await _tokenService.GenerateTokenAsync(user, roles);
+        var roles = await userManager.GetRolesAsync(user);
+        var tokenResult = await tokenService.GenerateTokenAsync(user, roles);
 
         return FromResult(tokenResult);
     }
 
     [HttpPost("promote")]
-    [Authorize(Roles = "Administrador")] // Apenas administradores podem promover outros usuários
+    [Authorize(Roles = "Administrator")] // Apenas administradores podem promover outros usuários
     public async Task<IActionResult> PromoteUser([FromBody] PromoteUserRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        var user = await userManager.FindByEmailAsync(request.Email);
         if (user == null)
         {
             return FromResult(OperationResult.Failure("Usuário não encontrado."));
         }
 
-        var isInRole = await _userManager.IsInRoleAsync(user, "Administrador");
+        var isInRole = await userManager.IsInRoleAsync(user, "Administrador");
         if (isInRole)
         {
             return FromResult(OperationResult.Failure("Usuário já é Administrador."));
         }
 
-        var roleExists = await _roleManager.RoleExistsAsync("Administrador");
+        var roleExists = await roleManager.RoleExistsAsync("Administrador");
         if (!roleExists)
         {
-            var roleResult = await _roleManager.CreateAsync(new IdentityRole("Administrador"));
+            var roleResult = await roleManager.CreateAsync(new IdentityRole("Administrador"));
             if (!roleResult.Succeeded)
             {
                 return FromResult(OperationResult.Failure(roleResult.Errors.Select(e => e.Description)));
             }
         }
 
-        var result = await _userManager.AddToRoleAsync(user, "Administrador");
+        var result = await userManager.AddToRoleAsync(user, "Administrador");
         if (!result.Succeeded)
         {
             return FromResult(OperationResult.Failure(result.Errors.Select(e => e.Description)));
