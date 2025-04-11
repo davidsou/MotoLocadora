@@ -13,16 +13,17 @@ public abstract class BaseController(IMediator mediator) : ControllerBase
             return NoContent();
 
         return result.IsSuccess
-            ? (result.Value is null ? NoContent() : Ok(result.Value))
+            ? Ok(new { result.Value, message = result.Message })
             : BadRequest(new { error = result.Errors });
     }
+
     protected IActionResult FromResult(OperationResult result)
     {
         if (result is null)
             return NoContent();
 
         return result.IsSuccess
-            ? NoContent()
+            ? Ok(new { message = result.Message })
             : BadRequest(new { error = result.Errors });
     }
 }

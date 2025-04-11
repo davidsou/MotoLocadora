@@ -3,10 +3,11 @@ using MotoLocadora.Domain.Entities;
 using MotoLocadora.Infrastructure.EntityConfiguration;
 using MotoLocadora.BuildingBlocks.Entities;
 using System.Reflection;
+using MotoLocadora.Domain.Interfaces;
 
 namespace MotoLocadora.Infrastructure.Context;
 
-public  class AppSqlContext(DbContextOptions<AppSqlContext> options) : DbContext(options)
+public  class AppSqlContext(DbContextOptions<AppSqlContext> options, ICurrentUserService currentUserService) : DbContext(options)
 {
     public DbSet<Motorcycle> Motorcycles { get; set; }
     public DbSet<Notification> Notifications { get; set; }
@@ -40,9 +41,12 @@ public  class AppSqlContext(DbContextOptions<AppSqlContext> options) : DbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedAt = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = currentUserService.UserId;
                     break;
                 case EntityState.Modified:
                     entry.Entity.ChangedAt = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = currentUserService.UserId;
+
                     break;
             }
         return base.SaveChanges();

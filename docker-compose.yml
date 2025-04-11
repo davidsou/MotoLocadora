@@ -22,9 +22,9 @@ services:
     container_name: motolocadora-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__SqlConnection=Host=motolocadora-db;Port=5432;Database=motolocadora;Username=postgres;Password=postgres
+      - ConnectionStrings__SqlConnection=Host=motolocadora-db;Port=5432;Database=MOTOLOCADORA;Username=postgres;Password=postgres
     ports:
-      - "5000:80"
+      - "5000:8080"
     depends_on:
       - motolocadora-db
     networks:

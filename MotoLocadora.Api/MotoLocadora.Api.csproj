@@ -28,4 +28,8 @@
     <ProjectReference Include="..\MotoLocadora.Infraestructure.Ioc\MotoLocadora.Infraestructure.Ioc.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

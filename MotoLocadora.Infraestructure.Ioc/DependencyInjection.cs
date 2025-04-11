@@ -45,5 +45,6 @@ public static class DependencyInjection
         services.AddTransient<IRentRepository, RentRepository>();
         services.AddTransient<IRiderRepository, RiderRepository>();
         services.AddTransient<ITariffRepository, TariffRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
     }
 }
