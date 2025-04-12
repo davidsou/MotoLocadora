@@ -1,5 +1,6 @@
 ﻿using MotoLocadora.Application.Features.Ryders.Dtos;
 using MotoLocadora.Domain.Entities;
+using MotoLocadora.Domain.Enums;
 
 namespace MotoLocadora.Application.Features.Ryders.Mappers;
 public static class RiderMapper
@@ -12,9 +13,24 @@ public static class RiderMapper
         LicenseDrive = dto.LicenseDrive,
         LicenseDriveType = dto.LicenseDriveType,
         LicenseDriveImageLink = dto.LicenseDriveImageLink,
-        Type = dto.Type,
+        Type = dto.Type.GetValueOrDefault(),
         Email = dto.Email,
-        Phone = dto.Phone
+        Phone = dto.Phone,
+        UserId = dto.UserId,
+
+    };
+    public static Rider ToEntity(this RiderDto dto, string userId) => new()
+    {
+        Name = dto.Name,
+        CommpanyId = dto.CommpanyId,
+        BirthDate = dto.BirthDate,
+        LicenseDrive = dto.LicenseDrive,
+        LicenseDriveType = dto.LicenseDriveType,
+        LicenseDriveImageLink = dto.LicenseDriveImageLink,
+        Type = dto.Type.GetValueOrDefault(),
+        Email = dto.Email,
+        Phone = dto.Phone,
+        UserId = userId // ✅ Aqui vinculamos!
     };
 
     public static RiderDto ToDto(this Rider entity) => new(
@@ -22,10 +38,11 @@ public static class RiderMapper
         entity.CommpanyId,
         entity.BirthDate,
         entity.LicenseDrive,
-        entity.LicenseDriveType,
+        Enum.TryParse<LicenseDriveTypeEnum>(entity.LicenseDriveType.ToString(), out var licenseType) ? licenseType : LicenseDriveTypeEnum.A,
         entity.LicenseDriveImageLink,
         entity.Type,
         entity.Email,
-        entity.Phone
+        entity.Phone,
+        entity.UserId
     );
 }

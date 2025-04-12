@@ -28,7 +28,7 @@ public class UpdateRider
                 entity.LicenseDrive = request.Rider.LicenseDrive;
                 entity.LicenseDriveType = request.Rider.LicenseDriveType;
                 entity.LicenseDriveImageLink = request.Rider.LicenseDriveImageLink;
-                entity.Type = request.Rider.Type;
+                entity.Type = request.Rider.Type.GetValueOrDefault();
                 entity.Email = request.Rider.Email;
                 entity.Phone = request.Rider.Phone;
                 entity.ChangedAt = DateTime.UtcNow;

@@ -2,14 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using MotoLocadora.Application.Features.Auth;
+using MotoLocadora.Application.Features.Auth.Dtos;
 using MotoLocadora.Application.Interfaces;
 using MotoLocadora.Application.Models.Auth;
 using MotoLocadora.BuildingBlocks.Core;
 using MotoLocadora.BuildingBlocks.Entities;
-using MotoLocadora.BuildingBlocks.Options;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace MotoLocadora.Api.Controllers;
 
@@ -23,25 +21,12 @@ public class AuthController(UserManager<ApplicationUser> userManager,
                       IMediator mediator) : BaseController(mediator)
 {
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var user = new ApplicationUser
-        {
-            UserName = request.Email,
-            Email = request.Email,
-            FullName = request.FullName
-        };
-
-        var result = await userManager.CreateAsync(user, request.Password);
-
-        if (!result.Succeeded)
-        {
-            return FromResult(OperationResult.Failure(result.Errors.Select(e => e.Description)));
-        }
-
-        await userManager.AddToRoleAsync(user, "Client");
-
-        return FromResult(OperationResult.Success("Usuário registrado com sucesso!"));
+        var command = new RegisterUserWithRider.Command(request);
+        var result = await _mediator.Send(command);
+        return FromResult(result);
     }
 
     [HttpPost("login")]

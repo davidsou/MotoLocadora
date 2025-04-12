@@ -112,6 +112,9 @@ builder.Services.AddSwaggerGen(c =>
     {
         { securityScheme, Array.Empty<string>() }
     });
+
+    c.SupportNonNullableReferenceTypes();
+    c.UseInlineDefinitionsForEnums();
 });
 
 
@@ -129,7 +132,11 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MotoLocadora API v1");
+        c.InjectJavascript("/swagger-custom.js");
+    });
 }
 
 app.UseHttpsRedirection();

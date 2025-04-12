@@ -10,7 +10,7 @@ public class CreateRider
 {
     public record Command(RiderDto Rider) : IRequest<OperationResult<int>>;
 
-    public class Handler(IRiderRepository repository, ILogger<Handler> logger)
+    public class Handler(IRiderRepository repository, ICurrentUserService userService, ILogger<Handler> logger)
         : BaseHandler(logger), IRequestHandler<Command, OperationResult<int>>
     {
         private readonly IRiderRepository _repository = repository;
@@ -19,7 +19,9 @@ public class CreateRider
         {
             return await TryCatchAsync(async () =>
             {
-                var entity = request.Rider.ToEntity();
+                var userId = userService.UserId;
+
+                var entity = request.Rider.ToEntity(userId);                
                 await _repository.AddAsync(entity);
                 return OperationResult<int>.Success(entity.Id);
             }, "Criar entregador");
