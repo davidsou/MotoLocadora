@@ -1,4 +1,5 @@
 using Figgle;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ using MotoLocadora.Infraestructure.Ioc;
 using MotoLocadora.Infrastructure.Context;
 using MotoLocadora.Infrastructure.Seeders;
 using MotoLocadora.Infrastructure.Services;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +35,7 @@ builder.Services.AddScoped<ApplicationSeeder>();
 // Centralizamos a injeção no método AddInfrastructure
 builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddApplicationServices();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 
 

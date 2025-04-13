@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MotoLocadora.Application.Interfaces;
 using MotoLocadora.Application.Services;
+using MotoLocadora.BuildingBlocks.Extensions;
 using MotoLocadora.Domain.Interfaces;
 using System.Reflection;
 
@@ -12,12 +12,11 @@ public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddBuildingBlocksBehaviors();
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
-
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddScoped<ITokenService, TokenService>();
         services.AddHttpContextAccessor();

@@ -12,11 +12,11 @@ public static class RiderMapper
         BirthDate = dto.BirthDate,
         LicenseDrive = dto.LicenseDrive,
         LicenseDriveType = dto.LicenseDriveType,
-        LicenseDriveImageLink = dto.LicenseDriveImageLink,
+        LicenseDriveImageLink = dto.LicenseDriveImageLink ?? string.Empty,
         Type = dto.Type.GetValueOrDefault(),
         Email = dto.Email,
-        Phone = dto.Phone,
-        UserId = dto.UserId,
+        Phone = dto.Phone ?? string.Empty,
+        UserId = dto.UserId ?? string.Empty,
 
     };
     public static Rider ToEntity(this RiderDto dto, string userId) => new()
@@ -26,11 +26,11 @@ public static class RiderMapper
         BirthDate = dto.BirthDate,
         LicenseDrive = dto.LicenseDrive,
         LicenseDriveType = dto.LicenseDriveType,
-        LicenseDriveImageLink = dto.LicenseDriveImageLink,
+        LicenseDriveImageLink = dto.LicenseDriveImageLink ?? string.Empty,
         Type = dto.Type.GetValueOrDefault(),
-        Email = dto.Email,
-        Phone = dto.Phone,
-        UserId = userId // ✅ Aqui vinculamos!
+        Email = dto.Email ?? string.Empty,
+        Phone = dto.Phone ?? string.Empty,
+        UserId = userId ?? string.Empty
     };
 
     public static RiderDto ToDto(this Rider entity) => new(
@@ -39,7 +39,7 @@ public static class RiderMapper
         entity.BirthDate,
         entity.LicenseDrive,
         Enum.TryParse<LicenseDriveTypeEnum>(entity.LicenseDriveType.ToString(), out var licenseType) ? licenseType : LicenseDriveTypeEnum.A,
-        entity.LicenseDriveImageLink,
+        entity.LicenseDriveImageLink ,
         entity.Type,
         entity.Email,
         entity.Phone,

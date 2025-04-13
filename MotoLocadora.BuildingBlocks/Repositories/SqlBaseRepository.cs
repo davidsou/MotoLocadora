@@ -84,6 +84,7 @@ public class SqlBaseRepository<T>(DbContext context) : ISqlBaseRepository<T> whe
         entity.Active = true;
         entity.CreatedAt = DateTime.UtcNow;
         await dbSet.AddAsync(entity);
+        await context.SaveChangesAsync();
     }
 
     public async Task AddRangeAsync(IEnumerable<T> entities)
@@ -95,13 +96,14 @@ public class SqlBaseRepository<T>(DbContext context) : ISqlBaseRepository<T> whe
             entity.CreatedAt = now;
         }
         await dbSet.AddRangeAsync(entities);
+        await context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(T entity)
     {
         entity.ChangedAt = DateTime.UtcNow;
         dbSet.Update(entity);
-        await Task.CompletedTask;
+        await context.SaveChangesAsync();        
     }
 
     public async Task RemoveAsync(T entity)
@@ -109,13 +111,14 @@ public class SqlBaseRepository<T>(DbContext context) : ISqlBaseRepository<T> whe
         entity.Active = false;
         entity.ChangedAt = DateTime.UtcNow;
         dbSet.Update(entity);
-        await Task.CompletedTask;
+        await context.SaveChangesAsync();        
     }
 
     public async Task DeleteAsync(T entity)
     {
         dbSet.Remove(entity);
-        await Task.CompletedTask;
+        await context.SaveChangesAsync();
+        
     }
     public async Task<int> CountAsync(Expression<Func<T, bool>>? filter = null)
     {

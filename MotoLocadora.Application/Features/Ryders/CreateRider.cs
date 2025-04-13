@@ -22,8 +22,8 @@ public class CreateRider
                 var userId = userService.UserId;
 
                 var entity = request.Rider.ToEntity(userId);                
-                await _repository.AddAsync(entity);
-                return OperationResult<int>.Success(entity.Id);
+                await _repository.AddAsync(entity);                
+                return OperationResult<int>.Success(entity.Id,"Entregador Criado com Sucesso");
             }, "Criar entregador");
         }
     }

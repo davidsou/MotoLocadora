@@ -45,7 +45,7 @@ public  class AppSqlContext(DbContextOptions<AppSqlContext> options, ICurrentUse
                     break;
                 case EntityState.Modified:
                     entry.Entity.ChangedAt = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = currentUserService.UserId;
+                    entry.Entity.ChangedBy = currentUserService.UserId;
 
                     break;
             }
@@ -60,9 +60,12 @@ public  class AppSqlContext(DbContextOptions<AppSqlContext> options, ICurrentUse
             {
                 case EntityState.Added:
                     entry.Entity.CreatedAt = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = currentUserService.UserId;
+
                     break;
                 case EntityState.Modified:
                     entry.Entity.ChangedAt = DateTime.UtcNow;
+                    entry.Entity.ChangedBy = currentUserService.UserId;
                     break;
             }
 

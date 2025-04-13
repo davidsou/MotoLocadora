@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using MotoLocadora.Application.Features.Ryders.Validators;
+using MotoLocadora.Application.Features.Ryders.Dtos;
 using MotoLocadora.BuildingBlocks.Extensions;
 
 namespace MotoLocadora.Application.Features.Auth.Dtos;
 
 public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
-    public RegisterRequestValidator()
+    public RegisterRequestValidator(IValidator<RiderDto> riderDtoValidator)
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("E-mail é obrigatório.")
@@ -17,6 +17,6 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
             .RuleForStrongPassword();
 
         RuleFor(x => x.Rider)
-            .SetValidator(new RiderDtoValidator());
+            .SetValidator(riderDtoValidator);
     }
 }

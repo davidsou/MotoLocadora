@@ -11,7 +11,7 @@ public record RiderDto(
     string? LicenseDriveImageLink,
     int? Type,
     string Email,
-    string? Phone,
-    string? UserId
+    string? Phone ,
+    string? UserId 
 );
 
