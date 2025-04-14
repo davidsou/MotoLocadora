@@ -10,6 +10,8 @@ public class RiderDtoValidator : AbstractValidator<RiderDto>
     private readonly IRiderRepository _riderRepository;
     public RiderDtoValidator(IRiderRepository riderRepository)
     {
+        _riderRepository = riderRepository;
+
         RuleFor(x => x.Name).NotEmpty().WithMessage("Nome é obrigatório.");
         
         RuleFor(x => x.CommpanyId).NotEmpty().WithMessage("CNPJ é obrigatório.").RuleForCnpj()

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using MotoLocadora.Application.Extensions;
 using MotoLocadora.BuildingBlocks.Entities;
+using MotoLocadora.BuildingBlocks.Extensions;
 using MotoLocadora.BuildingBlocks.Options;
 using MotoLocadora.Infraestructure.Ioc;
 using MotoLocadora.Infrastructure.Context;
@@ -35,7 +36,8 @@ builder.Services.AddScoped<ApplicationSeeder>();
 // Centralizamos a injeção no método AddInfrastructure
 builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddApplicationServices();
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+
 
 
 

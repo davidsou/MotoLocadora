@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using MotoLocadora.Application.Features.Ryders.Validators;
 using MotoLocadora.Application.Interfaces;
 using MotoLocadora.Application.Services;
 using MotoLocadora.BuildingBlocks.Extensions;
@@ -18,8 +19,11 @@ public static class ApplicationServiceRegistration
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
 
-        services.AddScoped<ITokenService, TokenService>();
+        var applicationAssembly = typeof(ApplicationServiceRegistration).Assembly;
+        services.AddValidatorsFromAssembly(applicationAssembly);
+
         services.AddHttpContextAccessor();
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         return services;
