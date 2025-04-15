@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS migrator
+
+WORKDIR /src
+
+COPY ["MotoLocadora.Api/MotoLocadora.Api.csproj", "MotoLocadora.Api/"]
+COPY ["MotoLocadora.Application/MotoLocadora.Application.csproj", "MotoLocadora.Application/"]
+COPY ["MotoLocadora.BuildingBlocks/MotoLocadora.BuildingBlocks.csproj", "MotoLocadora.BuildingBlocks/"]
+COPY ["MotoLocadora.Domain/MotoLocadora.Domain.csproj", "MotoLocadora.Domain/"]
+COPY ["MotoLocadora.Infraestructure.Ioc/MotoLocadora.Infraestructure.Ioc.csproj", "MotoLocadora.Infraestructure.Ioc/"]
+COPY ["MotoLocadora.Infrastructure/MotoLocadora.Infrastructure.csproj", "MotoLocadora.Infrastructure/"]
+
+RUN dotnet restore "MotoLocadora.Api/MotoLocadora.Api.csproj"
+
+COPY . .
+
+WORKDIR "/src/MotoLocadora.Api"
+
+RUN dotnet build "MotoLocadora.Api.csproj" -c Release -o /app/build
+
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"

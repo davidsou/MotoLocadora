@@ -8,6 +8,12 @@ public class RiderConfiguration : IEntityTypeConfiguration<Rider>
 {
     public void Configure(EntityTypeBuilder<Rider> builder)
     {
-        builder.HasIndex(x => x.Id).IsUnique();
+        builder.Property(e => e.LicenseDriveType)
+     .HasConversion<string>();
+
+        builder.HasIndex(e => e.CommpanyId).IsUnique();
+        builder.HasIndex(e => e.LicenseDrive).IsUnique();
+        builder.HasIndex(e => e.UserId);
+        builder.HasIndex(e => e.Id);
     }
 }

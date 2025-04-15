@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace MotoLocadora.BuildingBlocks.Repositories;
 
-namespace MotoLocadora.BuildingBlocks.Repositories
+public class NoSqlBaseRepository
 {
-    internal class NoSqlBaseRepository
-    {
-    }
 }

@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MotoLocadora.BuildingBlocks.Repositories;
+﻿using MotoLocadora.BuildingBlocks.Repositories;
 using MotoLocadora.Domain.Entities;
+using MotoLocadora.Domain.Interfaces;
+using MotoLocadora.Infrastructure.Context;
 
 namespace MotoLocadora.Infrastructure.Repositories;
 
-public class RentRepository(DbContext context) : SqlBaseRepository<Rent>(context)
+public class RentRepository(AppSqlContext context) : SqlBaseRepository<Rent>(context),IRentRepository
 {
 }

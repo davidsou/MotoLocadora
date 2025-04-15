@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  motolocadora-db:
+    image: postgres:15
+    container_name: motolocadora-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: MOTOLOCADORA
+    ports:
+      - "5432:5432"
+    volumes:
+      - motolocadora-db-data:/var/lib/postgresql/data
+    networks:
+      - motolocadora-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - motolocadora-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  motolocadora-api:
+    build:
+      context: .
+      dockerfile: MotoLocadora.Api/Dockerfile
+    container_name: motolocadora-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SqlConnection=Host=motolocadora-db;Port=5432;Database=MOTOLOCADORA;Username=postgres;Password=postgres
+    ports:
+      - "5000:8080"
+    depends_on:
+      motolocadora-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - motolocadora-network
+
+volumes:
+  motolocadora-db-data:
+
+networks:
+  motolocadora-network:
+    driver: bridge

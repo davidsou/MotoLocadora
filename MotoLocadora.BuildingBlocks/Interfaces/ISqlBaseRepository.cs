@@ -1,8 +1,7 @@
 ﻿using MotoLocadora.BuildingBlocks.Entities;
-using MotoLocadoraBuildingBlocks.Entities;
 using System.Linq.Expressions;
 
-namespace MotoLocadoraBuildingBlocks.Interfaces;
+namespace MotoLocadora.BuildingBlocks.Interfaces;
 
 public interface ISqlBaseRepository<T> where T : BaseEntity
 {
@@ -23,4 +22,6 @@ public interface ISqlBaseRepository<T> where T : BaseEntity
     Task UpdateAsync(T entity);
     Task RemoveAsync(T entity);
     Task DeleteAsync(T entity);
+    Task<int> CountAsync(Expression<Func<T, bool>>? filter = null);
+
 }

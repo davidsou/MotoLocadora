@@ -1,23 +1,19 @@
-﻿using MotoLocadoraBuildingBlocks.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using MotoLocadora.BuildingBlocks.Entities;
+using MotoLocadora.Domain.Enums;
 
-namespace MotoLocadora.Domain.Entities
+
+namespace MotoLocadora.Domain.Entities;
+
+public class Rider:BaseEntity
 {
-    public class Rider:BaseEntity
-    {
-        public string Name { get; set; }
-        public string CommpanyId { get; set; }//cnpj
-        public Date BirthDate { get; set; }
-        public string LicenseDrive { get; set; }
-        public string LicenseDriveType { get; set; }
-        public string LicenseDriveImageLink { get; set; }
-        public int Type { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-    }
+    public string Name { get; set; }
+    public string CommpanyId { get; set; }//cnpj
+    public DateTime BirthDate { get; set; }
+    public string LicenseDrive { get; set; }
+    public LicenseDriveTypeEnum LicenseDriveType { get; set; }
+    public string LicenseDriveImageLink { get; set; } = string.Empty;
+    public int Type { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
+    public string UserId { get; set; } = string.Empty;
 }

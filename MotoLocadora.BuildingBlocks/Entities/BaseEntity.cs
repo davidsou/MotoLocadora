@@ -1,4 +1,4 @@
-﻿namespace MotoLocadoraBuildingBlocks.Entities;
+﻿namespace MotoLocadora.BuildingBlocks.Entities;
 
 public abstract class BaseEntity
 {
