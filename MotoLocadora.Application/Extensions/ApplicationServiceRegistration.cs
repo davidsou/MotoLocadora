@@ -1,9 +1,13 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using MotoLocadora.Application.Features.Motorcycles.EventHandlers;
+using MotoLocadora.Application.Features.Rents.EventHandlers;
 using MotoLocadora.Application.Features.Ryders.Validators;
 using MotoLocadora.Application.Interfaces;
 using MotoLocadora.Application.Services;
 using MotoLocadora.BuildingBlocks.Extensions;
+using MotoLocadora.BuildingBlocks.Interfaces;
+using MotoLocadora.Domain.Events;
 using MotoLocadora.Domain.Interfaces;
 using System.Reflection;
 
@@ -25,6 +29,10 @@ public static class ApplicationServiceRegistration
         services.AddHttpContextAccessor();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        // Eventos
+        services.AddScoped<IEventHandler<RentCreatedEvent>, RentCreatedEventHandler>();
+        services.AddScoped<IEventHandler<MotorcycleCreatedEvent>, MotorcycleCreatedEventHandler>();
 
         return services;
 

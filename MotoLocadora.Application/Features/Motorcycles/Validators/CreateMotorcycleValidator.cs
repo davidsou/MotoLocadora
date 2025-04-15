@@ -1,16 +1,14 @@
 ﻿using FluentValidation;
-using MotoLocadora.Application.Features.Motorcycle;
-using MotoLocadora.Application.Features.Motorcycles;
 
-namespace MotoLocadora.Application.Features.Motorcycle.Validators;
+namespace MotoLocadora.Application.Features.Motorcycles.Validators;
 
 public class CreateMotorcycleValidator : AbstractValidator<CreateMotorcycle.Command>
 {
     public CreateMotorcycleValidator()
     {
         RuleFor(x => x.Motorcycle.Ano)
-            .NotEmpty().WithMessage("Ano é obrigatório.")
-            .Length(4).WithMessage("Ano deve ter 4 dígitos.");
+            .NotNull().WithMessage("Ano é obrigatório.")
+            .InclusiveBetween(1000, 9999).WithMessage("Ano deve ter 4 dígitos.");
 
         RuleFor(x => x.Motorcycle.Modelo)
             .NotEmpty().WithMessage("Modelo é obrigatório.");

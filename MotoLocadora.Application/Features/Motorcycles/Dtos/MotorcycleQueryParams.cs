@@ -5,5 +5,5 @@ namespace MotoLocadora.Application.Features.Motorcycles.Dtos;
 public class MotorcycleQueryParams : QueryParamsBase
 {
     public string? FilterByModelo { get; set; }
-    public string? FilterByAno { get; set; }
+    public int? FilterByAno { get; set; }
 }

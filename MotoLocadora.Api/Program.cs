@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MotoLocadora.Application.Extensions;
 using MotoLocadora.BuildingBlocks.Entities;
@@ -29,6 +30,8 @@ var jwtOptions = new JwtOptions();
 builder.Configuration.GetSection(JwtOptions.SectionName).Bind(jwtOptions);
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 builder.Services.Configure<AdminSeedOptions>(builder.Configuration.GetSection(AdminSeedOptions.SectionName));
+builder.Services.Configure<EventBusOptions>(builder.Configuration.GetSection(EventBusOptions.SectionName));
+
 
 // Registra o seeder
 builder.Services.AddScoped<ApplicationSeeder>();
@@ -36,7 +39,7 @@ builder.Services.AddScoped<ApplicationSeeder>();
 // Centralizamos a injeção no método AddInfrastructure
 builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddApplicationServices();
-
+builder.Services.AddHostedService<RabbitMqConsumer>();
 
 
 
@@ -129,6 +132,9 @@ var app = builder.Build();
 // Seeder generico.
 using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppSqlContext>();
+    dbContext.Database.Migrate();
+
     var seeder = scope.ServiceProvider.GetRequiredService<ApplicationSeeder>();
     await seeder.SeedAsync();
 }

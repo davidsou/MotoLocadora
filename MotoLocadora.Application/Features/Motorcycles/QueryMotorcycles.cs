@@ -27,7 +27,7 @@ public class QueryMotorcycles
                 {
                     Filter = m =>
                         (string.IsNullOrEmpty(parameters.FilterByModelo) || m.Modelo.Contains(parameters.FilterByModelo)) &&
-                        (string.IsNullOrEmpty(parameters.FilterByAno) || m.Ano.Contains(parameters.FilterByAno)),
+                        (!parameters.FilterByAno.HasValue || m.Ano == parameters.FilterByAno.Value),
                     OrderBy = parameters.OrderBy,
                     OrderDescending = parameters.OrderDescending,
                     Skip = parameters.Skip,

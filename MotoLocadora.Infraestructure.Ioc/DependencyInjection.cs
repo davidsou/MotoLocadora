@@ -8,6 +8,8 @@ using MotoLocadora.BuildingBlocks.Options;
 using MotoLocadora.BuildingBlocks.Entities;
 using Microsoft.AspNetCore.Identity;
 using MotoLocadora.Infrastructure.Services;
+using MotoLocadora.BuildingBlocks.Interfaces;
+using MotoLocadora.Domain.Events;
 
 namespace MotoLocadora.Infraestructure.Ioc;
 
@@ -22,7 +24,10 @@ public static class DependencyInjection
         DbContext(services, connectionStringSettings);
       //  ApplicationServices(services);
         Repositories(services);
-        // builder.Services.AddRabbitMqSetup(builder.Configuration);
+        services.AddSingleton<IEventBusPublisher, RabbitMqPublisher>();
+        
+
+
 
         return services;
     }
@@ -35,6 +40,7 @@ public static class DependencyInjection
         services.AddDbContext<AppSqlContext>(options => options.UseNpgsql(connectionStringSettings.SqlConnection));
 
         services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseNpgsql(connectionStringSettings.SqlConnection));
+        
 
 
     }
