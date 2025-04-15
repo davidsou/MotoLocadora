@@ -17,4 +17,9 @@ public class RiderRepository(AppSqlContext context) : SqlBaseRepository<Rider>(c
     {
         return await context.Riders.AnyAsync(r => r.LicenseDrive == licenseDrive);
     }
+
+    public async Task<Rider?> GetRiderByUserIdAsync(string userId)
+    {
+        return await context.Riders.FirstOrDefaultAsync( x=> x.UserId == userId);
+    }
 }

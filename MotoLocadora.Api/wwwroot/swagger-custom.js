@@ -9,27 +9,31 @@
                     const clonedResponse = response.clone();
                     const jsonResponse = await clonedResponse.json();
 
-                    // Verifica se a chamada foi para o endpoint de login
-                    if (arguments[0].includes('/api/Auth/login')) {
+                    if (arguments[0].includes("/api/Auth/login")) {
                         const token = jsonResponse.token;
-                        if (token) {
-                            console.log('Token JWT interceptado do login:', token);
+                        if (token && window.ui) {
                             const bearerToken = bearerPrefix + token;
 
-                            // Encontra o campo de token do Swagger UI e preenche automaticamente
-                            const tokenInput = document.querySelector('input[placeholder="Bearer token"]');
-                            if (tokenInput) {
-                                tokenInput.value = bearerToken;
-                                // Simula clique no botão "Authorize"
-                                const authorizeButton = document.querySelector('.auth-wrapper .btn.modal-btn.auth.authorize');
-                                if (authorizeButton) {
-                                    authorizeButton.click();
+                            // Usa a API do Swagger UI para autenticar
+                            const authorization = {
+                                Bearer: {
+                                    name: "Authorization",
+                                    schema: {
+                                        type: "apiKey",
+                                        in: "header",
+                                        name: "Authorization",
+                                        description: ""
+                                    },
+                                    value: bearerToken
                                 }
-                            }
+                            };
+
+                            window.ui.preauthorizeApiKey("Bearer", bearerToken);
+                            console.log("JWT token aplicado ao Swagger:", bearerToken);
                         }
                     }
                 } catch (error) {
-                    console.error('Swagger Auto Auth Error:', error);
+                    console.error("Erro ao aplicar token automaticamente:", error);
                 }
 
                 return response;

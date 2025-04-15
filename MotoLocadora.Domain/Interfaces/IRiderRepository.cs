@@ -7,4 +7,5 @@ public interface IRiderRepository : ISqlBaseRepository<Rider>
 {
     Task<bool> ExistsByCompanyIdAsync(string companyId);
     Task<bool> ExistsByLicenseDriveAsync(string licenseDrive);
+    Task<Rider?> GetRiderByUserIdAsync(string userId);
 }

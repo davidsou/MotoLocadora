@@ -1,20 +1,20 @@
+using Amazon.S3;
 using Figgle;
-using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using MotoLocadora.Application.Extensions;
 using MotoLocadora.BuildingBlocks.Entities;
-using MotoLocadora.BuildingBlocks.Extensions;
+using MotoLocadora.BuildingBlocks.Interfaces;
 using MotoLocadora.BuildingBlocks.Options;
 using MotoLocadora.Infraestructure.Ioc;
 using MotoLocadora.Infrastructure.Context;
 using MotoLocadora.Infrastructure.Seeders;
 using MotoLocadora.Infrastructure.Services;
-using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 var asciiArt = FiggleFonts.Standard.Render("MOTOLOCADORA");
 Console.WriteLine(asciiArt);
 
-// Configuração das opções de connection string , jwt e seeder
+// Configuração das options : connectionstring , jwt, seeder, eventbus, S3
 var connectionStringOptions = new ConnectionStringOptions();
 builder.Configuration.GetSection(ConnectionStringOptions.SectionName).Bind(connectionStringOptions);
 var jwtOptions = new JwtOptions();
@@ -31,6 +31,7 @@ builder.Configuration.GetSection(JwtOptions.SectionName).Bind(jwtOptions);
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 builder.Services.Configure<AdminSeedOptions>(builder.Configuration.GetSection(AdminSeedOptions.SectionName));
 builder.Services.Configure<EventBusOptions>(builder.Configuration.GetSection(EventBusOptions.SectionName));
+builder.Services.Configure<S3Options>(builder.Configuration.GetSection(S3Options.SectionName));
 
 
 // Registra o seeder
@@ -41,7 +42,15 @@ builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddHostedService<RabbitMqConsumer>();
 
-
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddScoped<IStorageService, LocalStorageService>();
+}
+else
+{
+    builder.Services.AddAWSService<IAmazonS3>();
+    builder.Services.AddScoped<IStorageService, S3StorageService>();
+}
 
 
 // Configuração do Identity
@@ -54,7 +63,6 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
 
 // Configuração do JWT
 var key = Encoding.UTF8.GetBytes(jwtOptions.Key);
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -149,6 +157,17 @@ if (app.Environment.IsDevelopment())
         c.InjectJavascript("/swagger-custom.js");
     });
 }
+// Pra formatar a URL dos arquivos em ambiente de desenvolvimento
+var storagePath = Path.Combine(app.Environment.ContentRootPath, "Storage");
+
+if (!Directory.Exists(storagePath))
+    Directory.CreateDirectory(storagePath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(storagePath),
+    RequestPath = "/storage"
+});
 
 app.UseHttpsRedirection();
 
