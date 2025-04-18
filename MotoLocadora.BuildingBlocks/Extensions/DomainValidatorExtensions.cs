@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 
 namespace MotoLocadora.BuildingBlocks.Extensions;
 public static class DomainValidatorExtensions
@@ -32,5 +33,20 @@ public static class DomainValidatorExtensions
         return ruleBuilder
             .Must(e => Enum.IsDefined(typeof(TEnum), e))
             .WithMessage($"O valor informado para {typeof(TEnum).Name} não é válido.");
+    }
+
+    public static IRuleBuilderOptions<T,IFormFile> RuleForValidFileSignature<T>(this IRuleBuilder<T,IFormFile> ruleBuilder)
+    {
+        return ruleBuilder
+                .Must(DomainValidator.HasValidFileSignature)
+                .WithMessage("O conteúdo do arquivo não corresponde à assinatura esperada.");
+    }
+    public static IRuleBuilderOptions<T, IFormFile> RuleForValidFileSignature<T>(
+        this IRuleBuilder<T, IFormFile> ruleBuilder,
+        params string[] allowedExtensions)
+    {
+        return ruleBuilder
+            .Must(file => DomainValidator.HasValidFileSignature(file, allowedExtensions))
+            .WithMessage($"O conteúdo do arquivo não corresponde à assinatura esperada para os tipos permitidos: {string.Join(", ", allowedExtensions)}.");
     }
 }
