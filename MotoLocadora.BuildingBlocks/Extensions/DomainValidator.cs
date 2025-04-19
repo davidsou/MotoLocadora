@@ -1,4 +1,6 @@
-﻿namespace MotoLocadora.BuildingBlocks.Extensions;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace MotoLocadora.BuildingBlocks.Extensions;
 
 public static class DomainValidator
 {
@@ -109,6 +111,84 @@ public static class DomainValidator
         bool hasDigit = password.Any(char.IsDigit);
 
         return hasLetter && hasDigit;
+    }
+    public static bool HasValidFileSignature(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return false;
+
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+        var signatures = new Dictionary<string, List<byte[]>>
+    {
+        { ".png",  [new byte[] { 0x89, 0x50, 0x4E, 0x47 }] },            // PNG
+        { ".bmp",  [new byte[] { 0x42, 0x4D }] },                        // BMP
+        { ".jpg",  [new byte[] { 0xFF, 0xD8, 0xFF }] },                  // JPG
+        { ".jpeg", [new byte[] { 0xFF, 0xD8, 0xFF }] },                  // JPEG
+        { ".pdf",  [new byte[] { 0x25, 0x50, 0x44, 0x46 }] },            // %PDF
+        { ".zip",  [new byte[] { 0x50, 0x4B, 0x03, 0x04 }] }             // PK..
+    };
+
+        if (!signatures.TryGetValue(extension, out var expectedSignatures))
+            return false;
+
+        var maxLength = expectedSignatures.Max(s => s.Length);
+        var buffer = new byte[maxLength];
+
+        try
+        {
+            using var stream = file.OpenReadStream();
+            if (stream.Read(buffer, 0, maxLength) < maxLength)
+                return false;
+
+            return expectedSignatures.Any(signature =>
+                buffer.Take(signature.Length).SequenceEqual(signature));
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    public static bool HasValidFileSignature(IFormFile file, params string[] allowedExtensions)
+    {
+        if (file == null || file.Length == 0)
+            return false;
+
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+        // Se a extensão não estiver permitida, já retorna false
+        if (allowedExtensions?.Length > 0 && !allowedExtensions.Contains(extension))
+            return false;
+
+        var signatures = new Dictionary<string, List<byte[]>>
+    {
+        { ".png",  [new byte[] { 0x89, 0x50, 0x4E, 0x47 }] },
+        { ".bmp",  [new byte[] { 0x42, 0x4D }] },
+        { ".jpg",  [new byte[] { 0xFF, 0xD8, 0xFF }] },
+        { ".jpeg", [new byte[] { 0xFF, 0xD8, 0xFF }] },
+        { ".pdf",  [new byte[] { 0x25, 0x50, 0x44, 0x46 }] },
+        { ".zip",  [new byte[] { 0x50, 0x4B, 0x03, 0x04 }] }
+    };
+
+        if (!signatures.TryGetValue(extension, out var expectedSignatures))
+            return false;
+
+        var maxLength = expectedSignatures.Max(s => s.Length);
+        var buffer = new byte[maxLength];
+
+        try
+        {
+            using var stream = file.OpenReadStream();
+            if (stream.Read(buffer, 0, maxLength) < maxLength)
+                return false;
+
+            return expectedSignatures.Any(signature =>
+                buffer.Take(signature.Length).SequenceEqual(signature));
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
 

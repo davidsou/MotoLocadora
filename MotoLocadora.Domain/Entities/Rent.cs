@@ -10,9 +10,10 @@ public class Rent:BaseEntity
     public DateTime Start { get; set; }
     public DateTime EstimateEnd { get; set; }
     public DateTime End { get; set; }
+    public decimal EstimatedPrice { get; set; }
     public decimal AppliedFine { get; set; }
     public string FineReason { get; set; }
-    public Decimal FinalPrice { get; set; }
+    public decimal FinalPrice { get; set; }
 
 
 }

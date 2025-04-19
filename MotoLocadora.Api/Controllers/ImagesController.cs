@@ -8,7 +8,7 @@ namespace MotoLocadora.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ImagenController(IMediator mediator) : BaseController(mediator)
+public class ImagemController(IMediator mediator) : BaseController(mediator)
 {
     [HttpPost]
     public async Task<IActionResult> Upload([FromForm] UploadImageDto dto)

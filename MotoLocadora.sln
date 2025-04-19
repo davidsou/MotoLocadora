@@ -16,6 +16,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotoLocadora.Infraestructure.Ioc", "MotoLocadora.Infraestructure.Ioc\MotoLocadora.Infraestructure.Ioc.csproj", "{F45CDA56-6168-4BB4-B67F-3256D71FD1C7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{986C97D1-F7FE-452F-A94E-7FA52D360B79}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CCA4339B-0063-4FCD-8256-1061D6F2F09A}"
 EndProject

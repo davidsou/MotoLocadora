@@ -9,7 +9,7 @@ namespace MotoLocadora.Api.Controllers;
 public class RentController(IMediator mediator) : BaseController(mediator)
 {
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] RentDto dto)
+    public async Task<IActionResult> Create([FromBody] CreateRentDto dto)
     {
         var result = await _mediator.Send(new CreateRent.Command(dto));
         return FromResult(result);
@@ -54,6 +54,13 @@ public class RentController(IMediator mediator) : BaseController(mediator)
     public async Task<IActionResult> GetDetailedById(int id)
     {
         var result = await _mediator.Send(new QueryRentById.Query(id));
+        return FromResult(result);
+    }
+
+    [HttpGet("simular")]
+    public async Task<IActionResult> Simulate([FromQuery] int motorcycleId, [FromQuery] DateTime start, [FromQuery] DateTime estimateEnd)
+    {
+        var result = await _mediator.Send(new SimulateRent.Query(motorcycleId, start, estimateEnd));
         return FromResult(result);
     }
 }

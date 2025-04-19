@@ -13,6 +13,7 @@ public static class RentMapper
         Start = dto.Start,
         EstimateEnd = dto.EstimateEnd,
         End = dto.End,
+        EstimatedPrice = dto.EstimatedPrice,
         AppliedFine = dto.AppliedFine,
         FineReason = dto.FineReason,
         FinalPrice = dto.FinalPrice
@@ -25,6 +26,7 @@ public static class RentMapper
         entity.Start,
         entity.EstimateEnd,
         entity.End,
+        entity.EstimatedPrice,
         entity.AppliedFine,
         entity.FineReason,
         entity.FinalPrice
