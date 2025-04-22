@@ -11,7 +11,7 @@ public class MotorcycleController(IMediator mediator) : BaseController(mediator)
 {
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] MotorcycleDto dto)
+    public async Task<IActionResult> Create([FromBody] CreateMotorcycleDto dto)
     {
         var result = await _mediator.Send(new CreateMotorcycle.Command(dto));
         return FromResult(result);

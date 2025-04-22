@@ -2,13 +2,14 @@
 using Microsoft.Extensions.Logging;
 using MotoLocadora.Application.Features.Rents.Dtos;
 using MotoLocadora.BuildingBlocks.Core;
+using MotoLocadora.BuildingBlocks.Extensions;
 using MotoLocadora.Domain.Interfaces;
 
 namespace MotoLocadora.Application.Features.Rents;
 
 public class SimulateRent
 {
-    public record Query(int MotorcycleId, DateTime Start, DateTime EstimateEnd) : IRequest<OperationResult<SimulationResultDto>>;
+    public record Query(int MotorcycleId, string Start, string EstimateEnd) : IRequest<OperationResult<SimulationResultDto>>;
 
     public class Handler(
         ITariffRepository tariffRepository,
@@ -19,8 +20,11 @@ public class SimulateRent
         {
             return await TryCatchAsync(async () =>
             {
+                request.Start.IsValidDateFormat(out var startDate);
+                request.EstimateEnd.IsValidDateFormat(out var estimateEndDate);
+
                 var tariffs = await tariffRepository.GetAllAsync();
-                var duration = (request.EstimateEnd.Date - request.Start.Date).Days;
+                var duration = (estimateEndDate - startDate).Days;
 
                 if (duration <= 0)
                     return OperationResult<SimulationResultDto>.Failure(["O período informado deve ser de pelo menos 1 dia."]);
@@ -35,7 +39,6 @@ public class SimulateRent
                 }
                 else
                 {
-                    // Verificar se o período é menor que o menor plano (antecipação)
                     var closestTariff = tariffs.OrderBy(t => t.Days).First();
                     if (duration < closestTariff.Days)
                     {
@@ -49,7 +52,6 @@ public class SimulateRent
                     }
                     else
                     {
-                        // Atraso
                         var longestTariff = tariffs.OrderByDescending(t => t.Days).First();
                         decimal basePrice = longestTariff.Days * longestTariff.Price;
                         int extraDays = duration - longestTariff.Days;
@@ -61,8 +63,8 @@ public class SimulateRent
 
                 var result = new SimulationResultDto(
                     MotorcycleId: request.MotorcycleId,
-                    Start: request.Start,
-                    EstimateEnd: request.EstimateEnd,
+                    Start: startDate,
+                    EstimateEnd: estimateEndDate,
                     SelectedPrice: selectedPrice,
                     Alternatives: tariffs.Select(t => new SimulationAlternative(t.Days, t.Days * t.Price)).ToList(),
                     Message: message
@@ -73,3 +75,4 @@ public class SimulateRent
         }
     }
 }
+

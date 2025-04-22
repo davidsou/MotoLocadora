@@ -58,7 +58,7 @@ public class RentController(IMediator mediator) : BaseController(mediator)
     }
 
     [HttpGet("simular")]
-    public async Task<IActionResult> Simulate([FromQuery] int motorcycleId, [FromQuery] DateTime start, [FromQuery] DateTime estimateEnd)
+    public async Task<IActionResult> Simulate([FromQuery] int motorcycleId, [FromQuery] string start, [FromQuery] string estimateEnd)
     {
         var result = await _mediator.Send(new SimulateRent.Query(motorcycleId, start, estimateEnd));
         return FromResult(result);

@@ -13,7 +13,7 @@ namespace MotoLocadora.Application.Features.Motorcycles;
 
 public class CreateMotorcycle
 {
-    public record Command(MotorcycleDto Motorcycle) : IRequest<OperationResult<int>>;
+    public record Command(CreateMotorcycleDto Motorcycle) : IRequest<OperationResult<int>>;
 
     public class Handler(
         IMotorcycleRepository repository,
